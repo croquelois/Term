@@ -1,0 +1,60 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <canvas id="myCanvas" class="center-block"></canvas>    
+    <script type="text/javascript" src="Grid.js"></script>
+    <script type="text/javascript" src="Term.js"></script>
+    <script>
+      const crownAsciiArt = [
+        '                           ',
+        '                           ',
+        '            #              ',
+        '          #####            ',
+        '            #              ',
+        '      ,,,  $$$  ,,,        ',
+        ' ,,=$   \"$$$$$\"   $=,,   ',
+        ',$$        $$$        $$,  ',
+        '*>         <*>         <*  ',
+        '$$         $$$         $$  ',
+        '"$$        $$$        $$"  ',
+        ' "$$       $$$       $$"   ',
+        '  *#########*#########*    ',
+        '  *#########*#########*    ',
+        '                           ',
+        '                           ',
+        '    Veni, Vidi, Vici!      ',
+        'I came, I saw, I conquered!',
+      ];
+      function initTerm(width, height, cb){
+        let canvas = document.getElementById("myCanvas");
+        let context = canvas.getContext("2d");
+        let imageObj = new Image();
+        imageObj.onload = function(){
+          canvas.width  = width*8;
+          canvas.height = height*13;
+          let term = new Term(width, height, context.drawImage.bind(context));
+          term.init(document, imageObj);
+          return cb(null, term);
+        };
+        imageObj.src = "ascii.png";
+      }
+      window.onload = function(){
+        initTerm(80,24,function(err, term){
+          if(err){
+            console.log(err);
+            return;
+          }
+          let maxLen = crownAsciiArt.reduce((maxLen,str) => Math.max(str.length,maxLen),0);
+          let y = crownAsciiArt.reduce(function(y,str){
+            term.putStr({x:Math.floor(term.size.x/2 - maxLen/2),y},str);
+            return y+1;
+          }, 2);
+          let playerName = "Croq";
+          term.putStrCentred(0, term.size.x, y, Term.colors.RED, "All Hail the Mighty " + playerName + "!");
+          term.fresh();
+        });
+      }
+    </script>
+  </body>
+</html>
