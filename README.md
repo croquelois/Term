@@ -32,7 +32,7 @@ check the index.html for example
 
 # Demo
 
-https://croquelois.github.io/Term/index.html
+https://croquelois.github.io/Term
 
 # Feature
 
